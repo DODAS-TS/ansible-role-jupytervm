@@ -8,6 +8,15 @@
   become: true
   become_user: "{{ vm_user }}"
 
+- name: Configure token
+  template:
+    src: jupyter_notebook_token_config.py
+    dest: /home/{{ vm_user }}/.jupyter/jupyter_notebook_config.py
+    owner: "{{ vm_user }}"
+  become: true
+  become_user: "{{ vm_user }}" 
+  when: persistence == "s3-goofys"
+
 - name: Configure s3 for jupyter
   template:
     src: jupyter_notebook_config.py
@@ -15,7 +24,7 @@
     owner: "{{ vm_user }}"
   become: true
   become_user: "{{ vm_user }}" 
-  when: persistence == "s3"
+  when: persistence == "s3-contents"
 
 - name: Launch jupyter notebook
   shell: nohup jupyter notebook --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
