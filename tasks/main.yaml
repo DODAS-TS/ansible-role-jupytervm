@@ -15,7 +15,7 @@
     owner: "{{ vm_user }}"
   become: true
   become_user: "{{ vm_user }}" 
-  when: persistence == "s3-goofys
+  when: persistence == "s3-goofys"
 
 - name: Configure token
   template:
@@ -30,7 +30,7 @@
   shell: wget https://github.com/kahing/goofys/releases/latest/download/goofys && chmod +x goofys && nohup ./goofys -f --debug_s3 -debug_fuse --endpoint {{ s3_endpoint }} {{ s3_bucket }}  /home/{{ vm_user }}/notebooks/{{ s3_mount_prefix }} > ~/log_goofys &
   become: true
   become_user: "{{ vm_user }}" 
-  when: persistence == "s3-goofys
+  when: persistence == "s3-goofys"
 
 - name: Configure s3 for jupyter
   template:
