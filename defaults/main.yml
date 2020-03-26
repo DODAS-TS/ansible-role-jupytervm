@@ -1,0 +1,9 @@
+vm_user: cloudadm
+jupyter_port: 8888
+jupyter_token: testme
+persistence: ""
+s3_access_id: "" 
+s3_access_key: ""
+s3_bucket: ""
+s3_endpoint: ""
+s3_mount_prefix:  "notebooks/"

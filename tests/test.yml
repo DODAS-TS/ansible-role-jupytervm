@@ -1,0 +1,14 @@
+---
+  - hosts: localhost
+    roles:
+      - role:  /home/dciangot/git/ansible-role-jupitervm
+        #ansible-role-jupytervm 
+        vm_user: dciangot
+        jupyter_port: 8888
+        jupyter_token: testme
+        persistence: "s3"
+        s3_access_id: "minioadmin" 
+        s3_access_key: "minioadmin"
+        s3_bucket: "jupyter"
+        s3_endpoint: "http://90.147.174.92:9000"
+        s3_mount_prefix:  ""

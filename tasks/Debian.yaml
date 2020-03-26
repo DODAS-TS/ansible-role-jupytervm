@@ -1,0 +1,11 @@
+---
+
+- name: Install pip
+  apt:
+    pkg: 
+      - python3-pip
+  become: true
+
+- name: Install jupyter
+  shell: pip3 install jupyter s3contents && mkdir -p /home/cloudadm/.jupyter/
+  become: true
