@@ -12,11 +12,12 @@ before_install:
 addons:
   apt:
     packages:
-    - python-pip
+    - python3-pip
+    - p
 
 install:
   # Check ansible version
-  - sudo pip install ansible
+  - sudo pip3 install ansible
 
   # Check ansible version
   - ansible --version
