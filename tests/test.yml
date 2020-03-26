@@ -2,7 +2,7 @@
   - hosts: localhost
     roles:
       - role:  ansible-role-jupytervm 
-        vm_user: ubuntu
+        vm_user: travis
         jupyter_port: 8888
         jupyter_token: testme
         persistence: ""
