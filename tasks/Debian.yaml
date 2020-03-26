@@ -7,6 +7,5 @@
   become: true
 
 - name: Install jupyter
-  shell: pip install --user jupyter s3contents && mkdir -p /home/cloudadm/.jupyter/
+  shell: pip3 install jupyter s3contents && mkdir -p /home/cloudadm/.jupyter/
   become: true
-  become_user: "{{ vm_user }}"
