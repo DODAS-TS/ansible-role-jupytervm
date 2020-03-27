@@ -7,5 +7,6 @@
   become: true
 
 - name: Install jupyter
-  shell: sudo -H pip3 install jupyter s3contents
-  
+  shell: pip3 --user install jupyter s3contents
+  become: true
+  become_user: "{{ vm_user }}" 
