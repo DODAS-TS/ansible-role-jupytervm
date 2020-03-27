@@ -1,47 +1,62 @@
 ---
-- name: Include "{{ansible_os_family}}" JupyterVM recipe
-  include: "{{ansible_os_family}}.yaml"
-  static: false
-
-- name: create need dirs
-  shell: mkdir -p /home/{{ vm_user }}/.jupyter && mkdir -p /home/{{ vm_user }}/.aws && mkdir -p /home/{{ vm_user }}/notebooks
-  become: true
-  become_user: "{{ vm_user }}"
-
-- name: Configure s3 goofys creds
-  template:
-    src: credentials
-    dest: /home/{{ vm_user }}/.aws/credentials
-    owner: "{{ vm_user }}"
-  become: true
-  become_user: "{{ vm_user }}" 
-  when: persistence == "s3-goofys"
-
-- name: Configure token
-  template:
-    src: jupyter_notebook_token_config.py
-    dest: /home/{{ vm_user }}/.jupyter/jupyter_notebook_config.py
-    owner: "{{ vm_user }}"
-  become: true
-  become_user: "{{ vm_user }}" 
-  when: persistence == "s3-goofys"
-
-- name: Start goofys
-  shell: wget https://github.com/kahing/goofys/releases/latest/download/goofys && chmod +x goofys && nohup ./goofys -f --debug_s3 -debug_fuse --endpoint {{ s3_endpoint }} {{ s3_bucket }}  /home/{{ vm_user }}/notebooks/{{ s3_mount_prefix }} > ~/log_goofys &
-  become: true
-  become_user: "{{ vm_user }}" 
-  when: persistence == "s3-goofys"
-
-- name: Configure s3 for jupyter
-  template:
-    src: jupyter_notebook_config.py
-    dest: /home/{{ vm_user }}/.jupyter/jupyter_notebook_config.py
-    owner: "{{ vm_user }}"
-  become: true
-  become_user: "{{ vm_user }}" 
-  when: persistence == "s3-contents"
-
-- name: Launch jupyter notebook
-  shell: cd notebooks && nohup  jupyter notebook --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
-  become: true
-  become_user: "{{ vm_user }}"
+  - name: Include "{{ansible_os_family}}" JupyterVM recipe
+    include: "{{ansible_os_family}}.yaml"
+    static: false
+  
+    #- name: Create home dir for the user
+    #file:
+    #  path: $HOME
+    #  state: directory
+    #  recurse: yes
+    #  owner: "{{ vm_user }}"
+    #  group: "{{ vm_user }}"
+  
+  - name: create need dirs
+    shell: mkdir -p $HOME/.jupyter && mkdir -p $HOME/.aws && mkdir -p $HOME/notebooks
+    become: true
+    become_user: "{{ vm_user }}"
+  
+  - name: Configure s3 goofys creds
+    template:
+      src: credentials
+      dest: $HOME/.aws/credentials
+      owner: "{{ vm_user }}"
+    become: true
+    become_user: "{{ vm_user }}"
+    when: persistence == "s3-goofys"
+  
+  - name: Configure token
+    template:
+      src: jupyter_notebook_token_config.py
+      dest: $HOME/.jupyter/jupyter_notebook_config.py
+      owner: "{{ vm_user }}"
+    become: true
+    become_user: "{{ vm_user }}"
+    when: persistence == "s3-goofys"
+  
+  - name: Download googfys
+    get_url:
+      url: https://github.com/kahing/goofys/releases/latest/download/goofys
+      dest: /usr/local/bin/goofys
+      mode: '0777'
+    when: persistence == "s3-goofys"
+  
+  - name: Start goofys
+    shell: pkill goofys && goofys --debug_s3 -debug_fuse --endpoint {{ s3_endpoint }} {{ s3_bucket }}  $HOME/notebooks/{{ s3_mount_prefix }}
+    become: true
+    become_user: "{{ vm_user }}"
+    when: persistence == "s3-goofys"
+  
+  - name: Configure s3 for jupyter
+    template:
+      src: jupyter_notebook_config.py
+      dest: $HOME/.jupyter/jupyter_notebook_config.py
+      owner: "{{ vm_user }}"
+    become: true
+    become_user: "{{ vm_user }}"
+    when: persistence == "s3-contents"
+  
+  - name: Launch jupyter notebook
+    shell: cd $HOME/notebooks && pkill jupyter && jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
+    become: true
+    become_user: "{{ vm_user }}"

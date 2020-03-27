@@ -7,4 +7,5 @@
   become: true
 
 - name: Install jupyter
-  shell: sudo -H pip3 install jupyter s3contents && mkdir -p /home/{{ vm_user }}/.jupyter/
+  shell: sudo -H pip3 install jupyter s3contents
+  
