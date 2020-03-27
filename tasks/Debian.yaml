@@ -7,6 +7,6 @@
   become: true
 
 - name: Install jupyter
-  shell: pip3 --user install jupyter s3contents
+  shell: pip3 install --user jupyter s3contents
   become: true
   become_user: "{{ vm_user }}" 
