@@ -25,15 +25,6 @@
     become_user: "{{ vm_user }}"
     when: persistence == "s3-goofys"
   
-  - name: Configure token
-    template:
-      src: jupyter_notebook_token_config.py
-      dest: $HOME/.jupyter/jupyter_notebook_config.py
-      owner: "{{ vm_user }}"
-    become: true
-    become_user: "{{ vm_user }}"
-    when: persistence == "s3-goofys"
-  
   - name: Download googfys
     get_url:
       url: https://github.com/kahing/goofys/releases/latest/download/goofys
@@ -56,6 +47,15 @@
     become_user: "{{ vm_user }}"
     when: persistence == "s3-goofys"
   
+  - name: Configure token
+    template:
+      src: jupyter_notebook_token_config.py
+      dest: $HOME/.jupyter/jupyter_notebook_config.py
+      owner: "{{ vm_user }}"
+    become: true
+    become_user: "{{ vm_user }}"
+    when: persistence != "s3-goofys"
+
   - name: Configure s3 for jupyter
     template:
       src: jupyter_notebook_config.py
