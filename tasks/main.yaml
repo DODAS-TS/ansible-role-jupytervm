@@ -66,6 +66,6 @@
     when: persistence == "s3-contents"
   
   - name: Launch jupyter notebook
-    shell: cd $HOME/notebooks && jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
+    shell: cd $HOME/notebooks && $HOME/.local/bin/jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
     become: true
     become_user: "{{ vm_user }}"
