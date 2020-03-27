@@ -40,9 +40,18 @@
       dest: /usr/local/bin/goofys
       mode: '0777'
     when: persistence == "s3-goofys"
-  
+ 
+  - name: kill previous jupyter processes
+    shell: pkill jupyter
+    ignore_errors: yes
+
+  - name: kill previous goofys processes
+    shell: pkill goofys
+    ignore_errors: yes
+    when: persistence == "s3-goofys"
+    
   - name: Start goofys
-    shell: pkill goofys && goofys --debug_s3 -debug_fuse --endpoint {{ s3_endpoint }} {{ s3_bucket }}  $HOME/notebooks/{{ s3_mount_prefix }}
+    shell: goofys --debug_s3 -debug_fuse --endpoint {{ s3_endpoint }} {{ s3_bucket }}  $HOME/notebooks/{{ s3_mount_prefix }}
     become: true
     become_user: "{{ vm_user }}"
     when: persistence == "s3-goofys"
@@ -57,6 +66,6 @@
     when: persistence == "s3-contents"
   
   - name: Launch jupyter notebook
-    shell: cd $HOME/notebooks && pkill jupyter && jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
+    shell: cd $HOME/notebooks && jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
     become: true
     become_user: "{{ vm_user }}"
