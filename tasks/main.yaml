@@ -16,15 +16,6 @@
     become: true
     become_user: "{{ vm_user }}"
 
-  - name: Configure s3fs
-    template:
-      src: passwd-s3fs
-      dest: ${HOME}/.passwd-s3fs
-      owner: "{{ vm_user }}"
-    become: true
-    become_user: "{{ vm_user }}"
-    when: persistence == "s3fs"
-    
   - name: Configure s3 goofys creds
     template:
       src: credentials
@@ -55,11 +46,6 @@
     become: true
     become_user: "{{ vm_user }}"
     when: persistence == "s3-goofys"
-  
-  - name: Start s3fs
-    shell: s3fs mybucket  $HOME/notebooks/{{ s3_mount_prefix }} -o passwd_file=${HOME}/.passwd-s3fs -o url={{ s3_endpoint }} -o use_path_request_style
-    become_user: "{{ vm_user }}"
-    when: persistence == "s3fs"
 
   - name: Configure token
     template:

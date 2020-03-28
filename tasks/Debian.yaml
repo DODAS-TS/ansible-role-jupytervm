@@ -4,7 +4,6 @@
   apt:
     pkg: 
       - python3-pip
-      - s3fs
   become: true
 
 - name: Install jupyter
