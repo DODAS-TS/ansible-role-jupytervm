@@ -2,7 +2,7 @@
   shell: curl https://rclone.org/install.sh | bash
 
 - name: Create conf dir for rclone
-   file:
+  file:
     path: $HOME/.config/rclone
     state: directory
     recurse: yes
