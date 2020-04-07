@@ -12,7 +12,7 @@
   become: true
   become_user: "{{ vm_user }}"
 
-- name: Create conf dir for rclone
+- name: Create cache dir for rclone
   file:
     path: /tmp/cache
     state: directory

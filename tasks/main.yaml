@@ -23,7 +23,7 @@
       owner: "{{ vm_user }}"
     become: true
     become_user: "{{ vm_user }}"
-    when: persistence == "s3-goofys"
+    #when: persistence == "s3-goofys"
 
   - name: Include rclone vFS recipe
     include: "rclone.yaml"
