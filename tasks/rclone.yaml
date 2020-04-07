@@ -1,0 +1,22 @@
+- name: install rclone
+  shell: curl https://rclone.org/install.sh | bash
+
+- name: Create conf dir for rclone
+   file:
+    path: $HOME/.config/rclone
+    state: directory
+    recurse: yes
+    owner: "{{ vm_user }}"
+    group: "{{ vm_user }}"
+
+
+- name: config rclone
+  template:
+    src: rclone.conf
+    dest: $HOME/.config/rclone/rclone.conf
+    owner: "{{ vm_user }}"
+  
+- name: mount notebooks vFS
+    shell: rclone mount --cache-dir /mnt/cache/ --vfs-cache-mode full minioadmin:ciangottini  $HOME/notebooks &
+    become: true
+    become_user: "{{ vm_user }}"

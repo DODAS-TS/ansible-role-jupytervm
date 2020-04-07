@@ -16,7 +16,7 @@
     become: true
     become_user: "{{ vm_user }}"
 
-  - name: Configure s3 goofys creds
+  - name: Configure s3 creds
     template:
       src: credentials
       dest: $HOME/.aws/credentials
@@ -24,6 +24,11 @@
     become: true
     become_user: "{{ vm_user }}"
     when: persistence == "s3-goofys"
+
+  - name: Include rclone vFS recipe
+    include: "rclone.yaml"
+    static: false
+    when: persistence == "s3-contents"
   
   - name: Download googfys
     get_url:
@@ -56,14 +61,14 @@
     become_user: "{{ vm_user }}"
     when: persistence != "s3-contents"
 
-  - name: Configure s3 for jupyter
-    template:
-      src: jupyter_notebook_config.py
-      dest: $HOME/.jupyter/jupyter_notebook_config.py
-      owner: "{{ vm_user }}"
-    become: true
-    become_user: "{{ vm_user }}"
-    when: persistence == "s3-contents"
+  #- name: Configure s3 for jupyter
+  #  template:
+  #    src: jupyter_notebook_config.py
+  #    dest: $HOME/.jupyter/jupyter_notebook_config.py
+  #    owner: "{{ vm_user }}"
+  #  become: true
+  #  become_user: "{{ vm_user }}"
+  #  when: persistence == "s3-contents"
   
   - name: Launch jupyter notebook
     shell: cd $HOME/notebooks && $HOME/.local/bin/jupyter notebook --no-browser --ip 0.0.0.0 --port {{ jupyter_port }}> $HOME/log_jupyter.txt &
