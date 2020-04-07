@@ -59,7 +59,7 @@
       owner: "{{ vm_user }}"
     become: true
     become_user: "{{ vm_user }}"
-    when: persistence != "s3-contents"
+    #when: persistence != "s3-contents"
 
   #- name: Configure s3 for jupyter
   #  template:

@@ -1,5 +1,6 @@
 - name: install rclone
   shell: curl https://rclone.org/install.sh | bash
+  ignore_errors: yes
 
 - name: Create conf dir for rclone
   file:
