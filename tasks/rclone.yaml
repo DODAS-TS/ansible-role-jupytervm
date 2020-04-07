@@ -17,6 +17,6 @@
     owner: "{{ vm_user }}"
   
 - name: mount notebooks vFS
-  shell: rclone mount --daemon --cache-dir /mnt/cache/ --vfs-cache-mode full minioadmin:ciangottini  $HOME/notebooks
+  shell: "rclone mount --daemon --cache-dir /mnt/cache/ --vfs-cache-mode full s3: $HOME/notebooks"
   become: true
   become_user: "{{ vm_user }}"
