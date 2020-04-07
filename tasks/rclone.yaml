@@ -8,6 +8,8 @@
     recurse: yes
     owner: "{{ vm_user }}"
     group: "{{ vm_user }}"
+  become: true
+  become_user: "{{ vm_user }}"
 
 
 - name: config rclone
