@@ -12,6 +12,15 @@
   become: true
   become_user: "{{ vm_user }}"
 
+- name: Create conf dir for rclone
+  file:
+    path: /tmp/cache
+    state: directory
+    recurse: yes
+    owner: "{{ vm_user }}"
+    group: "{{ vm_user }}"
+  become: true
+  become_user: "{{ vm_user }}"
 
 - name: config rclone
   template:
@@ -22,6 +31,6 @@
   become_user: "{{ vm_user }}"
   
 - name: mount notebooks vFS
-  shell: "rclone mount --daemon --cache-dir /mnt/cache/ --vfs-cache-mode full s3:{{ s3_bucket }} $HOME/notebooks"
+  shell: "rclone mount --daemon --cache-dir /tmp/cache --vfs-cache-mode full s3:{{ s3_bucket }} $HOME/notebooks"
   become: true
   become_user: "{{ vm_user }}"
