@@ -15,6 +15,8 @@
     src: rclone.conf
     dest: $HOME/.config/rclone/rclone.conf
     owner: "{{ vm_user }}"
+  become: true
+  become_user: "{{ vm_user }}"
   
 - name: mount notebooks vFS
   shell: "rclone mount --daemon --cache-dir /mnt/cache/ --vfs-cache-mode full s3: $HOME/notebooks"
