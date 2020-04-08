@@ -31,6 +31,6 @@
   become_user: "{{ vm_user }}"
   
 - name: mount notebooks vFS
-  shell: "rclone mount --config $HOME/.config/rclone/rclone.conf -daemon --cache-dir /tmp/cache --vfs-cache-mode full s3:{{ s3_bucket }} $HOME/notebooks"
+  shell: "rclone mount --config $HOME/.config/rclone/rclone.conf --daemon --cache-dir /tmp/cache --vfs-cache-mode full s3:{{ s3_bucket }} $HOME/notebooks"
   become: true
   become_user: "{{ vm_user }}"
