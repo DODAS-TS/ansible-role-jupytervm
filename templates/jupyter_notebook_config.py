@@ -19,7 +19,7 @@ c.HybridContentsManager.manager_classes = {
 
 c.HybridContentsManager.manager_kwargs = {
     # Args for root S3ContentsManager.
-    "shared": {
+    "shared_notebooks": {
         "access_key_id": "{{ s3_access_id}}",
         "secret_access_key": "{{ s3_access_key }}",
         "endpoint_url": "{{ s3_endpoint }}",
